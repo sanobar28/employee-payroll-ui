@@ -14,6 +14,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatSliderModule } from '@angular/material/slider'; 
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatButtonModule} from '@angular/material/button';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import {MatButtonModule} from '@angular/material/button';
     MatRadioModule,
     MatDatepickerModule,
     MatButtonModule,
+    HttpClientModule,
     MatSliderModule
   ],
   providers: [],

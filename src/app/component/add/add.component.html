@@ -1,3 +1,5 @@
+<app-header></app-header>
+
 <div class="form-content">
   <form class="form">
 
@@ -76,7 +78,8 @@
     <!-----Input Salary------>
     <div class="row-content">
       <label class="label text" for="salary">Choose your Salary </label>
-      <mat-slider thumbLabel [displayWith]="formatLabel" tickInterval="1000" aria-label="units" class="salary-input"
+
+  <mat-slider thumbLabel [displayWith]="formatLabel" color="primary" tickInterval="1000" aria-label="units" class="salary-input"
         name="salary" min="300000" max="500000" step="1000" value="400000">
         <output class="salary-output text" for="salary">400000</output>
       </mat-slider>
@@ -148,17 +151,21 @@
     <div class="row-content">
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Notes</mat-label>
-        <textarea matInput id="notes" class="input" name="Notes" placeholder="" style="height:100px" required></textarea>
-      </mat-form-field>   
+        <textarea matInput id="notes" class="input" name="Notes" placeholder="" style="height:100px"
+          required></textarea>
+      </mat-form-field>
     </div>
 
     <div class="buttonParent">
-      <button mat-raised-button color="accent" href="https://www.google.com/" class="resetButton button cancelButton">Cancel</button>
+      <a routerLink="/home">
+        <button mat-raised-button color="accent" class="resetButton button cancelButton">Cancel</button>
+      </a>
       <div class="submit-reset">
-          <button mat-raised-button color="accent" type="submit" class="button submitButton" id="submitButton">Submit</button>
-          <button mat-raised-button color="accent" type="reset" class="resetButton button">Reset</button>
+        <button mat-raised-button color="accent" type="submit" class="button submitButton"
+          id="submitButton">Submit</button>
+        <button mat-raised-button color="accent" type="reset" class="resetButton button">Reset</button>
       </div>
-  </div>
+    </div>
 
 
   </form>
