@@ -22,8 +22,7 @@ export class HomeComponent implements OnInit {
       this.employeeCount = this.employeeList.length;
       console.log(this.employeeList.length);
     });
-      
-    
+       
 
   }
 

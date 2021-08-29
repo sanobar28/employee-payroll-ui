@@ -1,7 +1,7 @@
 <app-header></app-header>
 
 <div class="form-content">
-  <form class="form">
+  <form class="form" [formGroup]="employeeFormGroup" (ngSubmit)="onSubmit()">
 
     <div class="form-head">Employee Payroll form </div>
 
@@ -9,7 +9,8 @@
     <div class="row-content">
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Full Name</mat-label>
-        <input id="name" class="name-input" matInput placeholder="Ex. Sanobar Mujawar" required>
+        <input id="name" class="name-input" formControlName="fullName" matInput placeholder="Ex. Sanobar Mujawar"
+          required>
       </mat-form-field>
     </div>
 
@@ -17,24 +18,24 @@
     <div class="row-content">
       <label class="label text" for="profile">Profile Image </label>
       <div class="profile-radio-content">
-        <mat-radio-button class=profile-width id="profile1" name="profile" color="primary"
-          value="../assets/profile-images/Ellipse -1.png" required>
+        <mat-radio-button class=profile-width id="profile1" name="profile" color="primary" ngDefaultControl
+          formControlName="profilePic" value="../assets/profile-images/Ellipse -1.png" required>
           <img class="profile" id='image1' src="../assets/profile-images/Ellipse -1.png">
         </mat-radio-button>
-        <mat-radio-button class=profile-width id="profile2" name="profile" color="primary"
-          value="../assets/profile-images/Ellipse -2.png" required>
+        <mat-radio-button class=profile-width id="profile2" name="profile" color="primary" ngDefaultControl
+          formControlName="profilePic" value="../assets/profile-images/Ellipse -2.png" required>
           <img class="profile" id='image2' src="../assets/profile-images/Ellipse -2.png">
         </mat-radio-button>
-        <mat-radio-button class=profile-width id="profile3" name="profile" color="primary"
-          value="../assets/profile-images/Ellipse -3.png" required>
+        <mat-radio-button class=profile-width id="profile3" name="profile" color="primary" ngDefaultControl
+          formControlName="profilePic" value="../assets/profile-images/Ellipse -3.png" required>
           <img class="profile" id='image3' src="../assets/profile-images/Ellipse -3.png">
         </mat-radio-button>
-        <mat-radio-button class=profile-width id="profile4" name="profile" color="primary"
-          value="../assets/profile-images/Ellipse -4.png" required>
+        <mat-radio-button class=profile-width id="profile4" name="profile" color="primary" ngDefaultControl
+          formControlName="profilePic" value="../assets/profile-images/Ellipse -4.png" required>
           <img class="profile" id='image4' src="../assets/profile-images/Ellipse -4.png">
         </mat-radio-button>
-        <mat-radio-button class=profile-width id="profile5" name="profile" color="primary"
-          value="../assets/profile-images/Ellipse -5.png" required>
+        <mat-radio-button class=profile-width id="profile5" name="profile" color="primary" ngDefaultControl
+          formControlName="profilePic" value="../assets/profile-images/Ellipse -5.png" required>
           <img class="profile" id='image5' src="../assets/profile-images/Ellipse -5.png">
         </mat-radio-button>
       </div>
@@ -45,114 +46,56 @@
     <div class="row-content">
       <label class="label text" for="gender">Gender</label>
       <div>
-        <mat-radio-button type="radio" id="male" name="gender" color="primary" value="male" required>
+        <mat-radio-button type="radio" id="male" name="gender" color="primary" value="male" ngDefaultControl
+          formControlName="gender" required>
           <label class="text" for="male">Male</label>
         </mat-radio-button>
-        <mat-radio-button type="radio" id="female" name="gender" color="primary" value="female" required>
+        <mat-radio-button type="radio" id="female" name="gender" color="primary" value="female" ngDefaultControl
+          formControlName="gender" required>
           <label class="text" for="female">Female</label>
         </mat-radio-button>
       </div>
     </div>
 
+    
+
     <!------Input Department------->
     <div class="row-content">
       <label class="label text" for="depatment">Department</label>
-      <mat-checkbox class="checkbox" id="hr" color="primary" name="department" formControlName="HR" value="HR">
-        <label class="text" for="hr">HR</label>
-      </mat-checkbox>
-      <mat-checkbox class="checkbox" id="sales" color="primary" name="department" formControlName="Sales" value="Sales">
-        <label class="text" for="sales">Sales</label>
-      </mat-checkbox>
-      <mat-checkbox class="checkbox" id="finance" color="primary" name="department" formControlName="Finance" value="Finance">
-        <label class="text" for="finance">Finance</label>
-      </mat-checkbox>
-      <mat-checkbox class="checkbox" id="engineer" color="primary" name="department" formControlName="Engineer" value="Engineer">
-        <label class="text" for="engineer">Engineer</label>
-      </mat-checkbox>
-      <mat-checkbox class="checkbox" id="other" color="primary" name="department" formControlName="Other" value="Other">
-        <label class="text" for="engineer">Other</label>
-      </mat-checkbox>
+      <div *ngFor="let department of Departments">
+        <mat-checkbox #checkbox class="checkbox" type="checkbox" color="primary" [value]="department.value"
+          (change)="onCheckboxChange($event)">
+          <label class="text">{{department.name}}</label>
+        </mat-checkbox>
+      </div>
     </div>
 
 
     <!-----Input Salary------>
     <div class="row-content">
       <label class="label text" for="salary">Choose your Salary </label>
-
-  <mat-slider thumbLabel [displayWith]="formatLabel" color="primary" tickInterval="1000" aria-label="units" class="salary-input"
-        name="salary" min="300000" max="500000" step="1000" value="400000">
-        <output class="salary-output text" for="salary">400000</output>
+      <mat-slider thumbLabel [displayWith]="formatLabel" #salaryOutput (change)="updateSetting($event)" color="primary"
+        tickInterval="1000" aria-label="units" class="salary-input" name="salary" min="300000" max="500000" step="1000"
+        [value]="salaryOutput" formControlName="salaryOutput">
       </mat-slider>
     </div>
 
     <!-------Input Date------>
     <div class="row-content">
       <label class="label text" for="startDate"> Start Date </label>
-      <div>
-        <select id="day" name="Day">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-          <option value="11">11</option>
-          <option value="12">12</option>
-          <option value="13">13</option>
-          <option value="14">14</option>
-          <option value="15">15</option>
-          <option value="16">16</option>
-          <option value="17">17</option>
-          <option value="18">18</option>
-          <option value="19">19</option>
-          <option value="20">20</option>
-          <option value="21">21</option>
-          <option value="22">22</option>
-          <option value="23">23</option>
-          <option value="24">24</option>
-          <option value="25">25</option>
-          <option value="26">26</option>
-          <option value="27">27</option>
-          <option value="28">28</option>
-          <option value="29">29</option>
-          <option value="30">30</option>
-          <option value="31">31</option>
-        </select>
-        <select id="month" name="Month">
-          <option value="Jan">January</option>
-          <option value="Feb">Febuary</option>
-          <option value="March">March</option>
-          <option value="April">April</option>
-          <option value="May">May</option>
-          <option value="June">June</option>
-          <option value="July">July</option>
-          <option value="Aug">August</option>
-          <option value="Sept">September</option>
-          <option value="Oct">October</option>
-          <option value="Nov">November</option>
-          <option value="Dec">December</option>
-        </select>
-        <select id="year" name="Year">
-          <option value="2020">2021</option>
-          <option value="2020">2020</option>
-          <option value="2019">2019</option>
-          <option value="2018">2018</option>
-          <option value="2017">2017</option>
-          <option value="2016">2016</option>
-        </select>
-      </div>
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="startDate">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
     </div>
 
     <!------Input Notes------->
     <div class="row-content">
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Notes</mat-label>
-        <textarea matInput id="notes" class="input" name="Notes" placeholder="" style="height:100px"
-          required></textarea>
+        <textarea matInput id="notes" class="input" name="Notes" formControlName="notes" placeholder=""
+          style="height:100px" required></textarea>
       </mat-form-field>
     </div>
 
