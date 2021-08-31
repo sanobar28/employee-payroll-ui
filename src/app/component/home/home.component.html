@@ -1,46 +1,48 @@
  <app-header></app-header>
 
  <div class="main-content">
-    <div class="header-content">
-        <div class="emp-detail-text">
-            Employee Details
-            <div class="emp-count">{{employeeCount}}</div>
-        </div>
-        <a class="add-button" routerLink="/form">
-            <img src="../assets/icons/add-24px.svg" alt="">Add User
-        </a>
-    </div>
-    <div class="table-main">
-        <table id ="display" class="table">
-            <tr>
-                <th></th>
-                <th>Name</th>
-                <th>Gender</th>
-                <th>Department</th>
-                <th>Salary</th>
-                <th>Start Date</th>
-                <th>Actions</th>
-            </tr>
-            <tr *ngFor="let employee of employeeList">
-                <td>
-                    <img class="profile" src={{employee.profilePic}} alt="">
-                </td>
-                <td>{{employee.name}}</td>
-                <td>{{employee.gender}}</td>
-                <td>
-                    <div class="dept-label">HR</div>
-                    <div class="dept-label">Finance</div>
-                </td>
-                <td>{{employee.salary}}</td>
-                <td>{{employee.startDate}}</td>
-                <td>
-                    <img id="{{employee.id}}" onclick="remove(this)"
-                        src="../assets/icons/delete-black-18dp.svg"
-                        alt="delete">
-                    <img id="{{employee.id}}" onclick="update(this)"
-                        src="../assets/icons/create-black-18dp.svg" alt="edit">
-                </td>
-            </tr>
-        </table>  
-    </div>
-</div> 
+   <div class="header-content">
+     <div class="emp-detail-text">
+       Employee Details
+       <div class="emp-count">{{employeeCount}}</div>
+     </div>
+     <a class="add-button" routerLink="/form">
+       <img src="../assets/icons/add-24px.svg" alt="Add User Logo">Add User
+     </a>
+   </div>
+
+   <div class="table-main">
+     <table id="display" class="table">
+       <tr>
+         <th></th>
+         <th>Name</th>
+         <th>Gender</th>
+         <th>Department</th>
+         <th>Salary</th>
+         <th>Start Date</th>
+         <th>Actions</th>
+       </tr>
+       <tr *ngFor="let employee of employeeList">
+         <td>
+           <img class="profile" src={{employee.profilePic}} alt="">
+         </td>
+         <td>{{employee.name}}</td>
+         <td>{{employee.gender}}</td>
+         <td>
+           <div class="dept-label" *ngFor="let department of employee.department">
+             {{department}}
+           </div>
+         </td>
+         <td>{{employee.salary}}</td>
+         <td>{{employee.startDate}}</td>
+
+         <td>
+           <img id={{employee.id}} (click)="remove(employee.id)" src="../assets/icons/delete-black-18dp.svg"
+            alt="delete">
+           <img id={{employee.id}} (click)="update(employee)" src="../assets/icons/create-black-18dp.svg" 
+            alt="edit">
+         </td>
+       </tr>
+     </table>
+   </div>
+ </div>

@@ -9,8 +9,7 @@
     <div class="row-content">
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Full Name</mat-label>
-        <input id="name" class="name-input" formControlName="fullName" matInput placeholder="Ex. Sanobar Mujawar"
-          required>
+        <input id="name" class="name-input" formControlName="name" matInput placeholder="Ex. Sanobar Mujawar" required>
       </mat-form-field>
     </div>
 
@@ -18,26 +17,28 @@
     <div class="row-content">
       <label class="label text" for="profile">Profile Image </label>
       <div class="profile-radio-content">
-        <mat-radio-button class=profile-width id="profile1" name="profile" color="primary" ngDefaultControl
-          formControlName="profilePic" value="../assets/profile-images/Ellipse -1.png" required>
-          <img class="profile" id='image1' src="../assets/profile-images/Ellipse -1.png">
-        </mat-radio-button>
-        <mat-radio-button class=profile-width id="profile2" name="profile" color="primary" ngDefaultControl
-          formControlName="profilePic" value="../assets/profile-images/Ellipse -2.png" required>
-          <img class="profile" id='image2' src="../assets/profile-images/Ellipse -2.png">
-        </mat-radio-button>
-        <mat-radio-button class=profile-width id="profile3" name="profile" color="primary" ngDefaultControl
-          formControlName="profilePic" value="../assets/profile-images/Ellipse -3.png" required>
-          <img class="profile" id='image3' src="../assets/profile-images/Ellipse -3.png">
-        </mat-radio-button>
-        <mat-radio-button class=profile-width id="profile4" name="profile" color="primary" ngDefaultControl
-          formControlName="profilePic" value="../assets/profile-images/Ellipse -4.png" required>
-          <img class="profile" id='image4' src="../assets/profile-images/Ellipse -4.png">
-        </mat-radio-button>
-        <mat-radio-button class=profile-width id="profile5" name="profile" color="primary" ngDefaultControl
-          formControlName="profilePic" value="../assets/profile-images/Ellipse -5.png" required>
-          <img class="profile" id='image5' src="../assets/profile-images/Ellipse -5.png">
-        </mat-radio-button>
+        <mat-radio-group ngDefaultControl formControlName="profilePic">
+          <mat-radio-button class=profile-width id="profile1" name="profile" color="primary"
+            value="../assets/profile-images/Ellipse -1.png" required>
+            <img class="profile" id='image1' src="../assets/profile-images/Ellipse -1.png">
+          </mat-radio-button>
+          <mat-radio-button class=profile-width id="profile2" name="profile" color="primary"
+            value="../assets/profile-images/Ellipse -2.png" required>
+            <img class="profile" id='image2' src="../assets/profile-images/Ellipse -2.png">
+          </mat-radio-button>
+          <mat-radio-button class=profile-width id="profile3" name="profile" color="primary"
+            value="../assets/profile-images/Ellipse -3.png" required>
+            <img class="profile" id='image3' src="../assets/profile-images/Ellipse -3.png">
+          </mat-radio-button>
+          <mat-radio-button class=profile-width id="profile4" name="profile" color="primary"
+            value="../assets/profile-images/Ellipse -4.png" required>
+            <img class="profile" id='image4' src="../assets/profile-images/Ellipse -4.png">
+          </mat-radio-button>
+          <mat-radio-button class=profile-width id="profile5" name="profile" color="primary"
+            value="../assets/profile-images/Ellipse -5.png" required>
+            <img class="profile" id='image5' src="../assets/profile-images/Ellipse -5.png">
+          </mat-radio-button>
+        </mat-radio-group>
       </div>
     </div>
 
@@ -46,25 +47,25 @@
     <div class="row-content">
       <label class="label text" for="gender">Gender</label>
       <div>
-        <mat-radio-button type="radio" id="male" name="gender" color="primary" value="male" ngDefaultControl
-          formControlName="gender" required>
-          <label class="text" for="male">Male</label>
-        </mat-radio-button>
-        <mat-radio-button type="radio" id="female" name="gender" color="primary" value="female" ngDefaultControl
-          formControlName="gender" required>
-          <label class="text" for="female">Female</label>
-        </mat-radio-button>
+        <mat-radio-group ngDefaultControl formControlName="gender">
+          <mat-radio-button type="radio" id="male" name="gender" color="primary" value="male" required>
+            <label class="text" for="male">Male</label>
+          </mat-radio-button>
+          <mat-radio-button type="radio" id="female" name="gender" color="primary" value="female" required>
+            <label class="text" for="female">Female</label>
+          </mat-radio-button>
+        </mat-radio-group>
       </div>
     </div>
 
-    
+
 
     <!------Input Department------->
     <div class="row-content">
       <label class="label text" for="depatment">Department</label>
-      <div *ngFor="let department of Departments">
+      <div *ngFor="let department of departments">
         <mat-checkbox #checkbox class="checkbox" type="checkbox" color="primary" [value]="department.value"
-          (change)="onCheckboxChange($event)">
+          (change)="onCheckboxChange($event)" [checked]='department.checked'>
           <label class="text">{{department.name}}</label>
         </mat-checkbox>
       </div>
@@ -74,9 +75,9 @@
     <!-----Input Salary------>
     <div class="row-content">
       <label class="label text" for="salary">Choose your Salary </label>
-      <mat-slider thumbLabel [displayWith]="formatLabel" #salaryOutput (change)="updateSetting($event)" color="primary"
+      <mat-slider thumbLabel [displayWith]="formatLabel" #salary (change)="updateSetting($event)" color="primary"
         tickInterval="1000" aria-label="units" class="salary-input" name="salary" min="300000" max="500000" step="1000"
-        [value]="salaryOutput" formControlName="salaryOutput">
+        [value]="salary" formControlName="salary">
       </mat-slider>
     </div>
 

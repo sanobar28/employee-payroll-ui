@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators, FormsModule } from '@angular/forms';
-import { ValueTransformer } from '@angular/compiler/src/util';
+
 import { NgModule } from '@angular/core';
 import { Employee } from 'src/app/model/employee';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { HttpService } from '../../service/http.service';
+import { DataService } from 'src/app/service/data.service';
+import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -14,39 +18,35 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 
 export class AddComponent implements OnInit {
 
-  public employee: Employee = new Employee();
-  employeeFormGroup: FormGroup;
+  public employee: Employee = new Employee;
+  public employeeFormGroup: FormGroup;
+  subscription: Subscription;
 
 
   /**
    * Array of objects to store departments
    */
-  Departments: Array<any> = [
+  departments: Array<any> = [
     {
-      id: 1,
       name: "HR",
       value: "HR",
     },
     {
-      id: 2,
       name: "Sales",
       value: "Sales",
 
     },
     {
-      id: 3,
       name: "Finance",
       value: "Finance",
 
     },
     {
-      id: 4,
       name: "Engineer",
       value: "Engineer",
 
     },
     {
-      id: 5,
       name: "Other",
       value: "Other",
 
@@ -57,15 +57,20 @@ export class AddComponent implements OnInit {
    * Creates the object of employee form on submit 
    * @param fb FormBulider object
    */
-  constructor(private fb: FormBuilder) {
-    this.employeeFormGroup = this.fb.group({
-      fullName: new FormControl(''),
+  constructor(
+    private formBuilder: FormBuilder,
+    private httpService: HttpService,
+    private dataService: DataService,
+    private activatedRoute: ActivatedRoute
+  ) {
+    this.employeeFormGroup = this.formBuilder.group({
+      name: new FormControl(''),
       profilePic: new FormControl(''),
       gender: new FormControl(''),
-      deptList: this.fb.array([], [Validators.required]),
-      salaryOutput: new FormControl(''),
+      department: this.formBuilder.array([], [Validators.required]),
+      salary: new FormControl(''),
       startDate: new FormControl(''),
-      notes: new FormControl('') 
+      notes: new FormControl('')
     })
   }
 
@@ -75,13 +80,13 @@ export class AddComponent implements OnInit {
    * @param event 
    */
   onCheckboxChange(event: MatCheckboxChange) {
-    const deptList: FormArray = this.employeeFormGroup.get('deptList') as FormArray;
+    const department: FormArray = this.employeeFormGroup.get('department') as FormArray;
 
     if (event.checked) {
-      deptList.push(new FormControl(event.source.value));
+      department.push(new FormControl(event.source.value));
     } else {
-      const index = deptList.controls.findIndex(x => x.value === event.source.value);
-      deptList.removeAt(index);
+      const index = department.controls.findIndex(x => x.value === event.source.value);
+      department.removeAt(index);
     }
   }
 
@@ -89,9 +94,9 @@ export class AddComponent implements OnInit {
   /**
    * To read Salary value from slider
    */
-  salaryOutput: number = 400000;
+  salary: number = 400000;
   updateSetting(event) {
-    this.salaryOutput = event.value;
+    this.salary = event.value;
   }
 
   formatLabel(value: number) {
@@ -105,11 +110,35 @@ export class AddComponent implements OnInit {
    * Submit form
    */
   onSubmit() {
-    console.log(this.employeeFormGroup.value)
+    this.employee = this.employeeFormGroup.value;
+    this.httpService.addEmployeeData(this.employee).subscribe(response => {
+      console.log(response);
+    });
   }
 
 
   ngOnInit(): void {
+    if (this.activatedRoute.snapshot.params['id'] != undefined) {
+      this.dataService.currentEmployee.subscribe(employee => {
+        if (Object.keys(employee).length !== 0) {
+          this.employeeFormGroup.get('name')?.setValue(employee.name);
+          this.employeeFormGroup.get('gender')?.setValue(employee.gender);
+          this.employeeFormGroup.get('notes')?.setValue(employee.notes);
+          this.employeeFormGroup.get('startDate')?.setValue(employee.startDate);
+          this.employeeFormGroup.get('profilePic')?.setValue(employee.profilePic);
+          this.employeeFormGroup.get('salary')?.setValue(employee.salary);
+
+          employee.department.forEach(departmentElement => {
+            for (let index = 0; index < this.departments.length; index++) {
+              if (this.departments[index].name === departmentElement) {
+                this.departments[index].checked = true;
+              }
+            }
+          });
+        }
+
+      });
+    }
 
   }
 

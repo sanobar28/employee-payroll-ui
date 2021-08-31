@@ -8,6 +8,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'form', component: AddComponent },
+  { path: 'form/:id', component: AddComponent },
   
 ];
 

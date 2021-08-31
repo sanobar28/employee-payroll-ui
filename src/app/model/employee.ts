@@ -1,4 +1,5 @@
 export class Employee {
+    [x: string]: any;
 
     id: number;
     name: string;
@@ -8,5 +9,4 @@ export class Employee {
     salary: string;
     startDate: Date;
     notes: string;
-
 }
