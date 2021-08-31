@@ -28,7 +28,7 @@ export class HttpService {
     return this.httpClient.delete(`${this.baseUrl}/delete/${id}`);   
   }
 
-  updateEmployeeData(employee: Employee, id) {
+  updateEmployeeData(id, employee: Employee) {
     return this.httpClient.put(`${this.baseUrl}/update/${id}`, employee);
   }
 

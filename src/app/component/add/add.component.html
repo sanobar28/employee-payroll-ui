@@ -9,7 +9,10 @@
     <div class="row-content">
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Full Name</mat-label>
-        <input id="name" class="name-input" formControlName="name" matInput placeholder="Ex. Sanobar Mujawar" required>
+        <input id="name" class="name-input" formControlName="name" matInput placeholder="Ex. Sanobar Mujawar">
+
+        <mat-error *ngIf="checkError('name', 'required')">Name is required</mat-error>
+        <mat-error *ngIf="checkError('name', 'pattern')">Invalid Name</mat-error>
       </mat-form-field>
     </div>
 
@@ -19,23 +22,23 @@
       <div class="profile-radio-content">
         <mat-radio-group ngDefaultControl formControlName="profilePic">
           <mat-radio-button class=profile-width id="profile1" name="profile" color="primary"
-            value="../assets/profile-images/Ellipse -1.png" required>
+            value="../assets/profile-images/Ellipse -1.png">
             <img class="profile" id='image1' src="../assets/profile-images/Ellipse -1.png">
           </mat-radio-button>
           <mat-radio-button class=profile-width id="profile2" name="profile" color="primary"
-            value="../assets/profile-images/Ellipse -2.png" required>
+            value="../assets/profile-images/Ellipse -2.png">
             <img class="profile" id='image2' src="../assets/profile-images/Ellipse -2.png">
           </mat-radio-button>
           <mat-radio-button class=profile-width id="profile3" name="profile" color="primary"
-            value="../assets/profile-images/Ellipse -3.png" required>
+            value="../assets/profile-images/Ellipse -3.png">
             <img class="profile" id='image3' src="../assets/profile-images/Ellipse -3.png">
           </mat-radio-button>
           <mat-radio-button class=profile-width id="profile4" name="profile" color="primary"
-            value="../assets/profile-images/Ellipse -4.png" required>
+            value="../assets/profile-images/Ellipse -4.png">
             <img class="profile" id='image4' src="../assets/profile-images/Ellipse -4.png">
           </mat-radio-button>
           <mat-radio-button class=profile-width id="profile5" name="profile" color="primary"
-            value="../assets/profile-images/Ellipse -5.png" required>
+            value="../assets/profile-images/Ellipse -5.png">
             <img class="profile" id='image5' src="../assets/profile-images/Ellipse -5.png">
           </mat-radio-button>
         </mat-radio-group>
@@ -48,10 +51,10 @@
       <label class="label text" for="gender">Gender</label>
       <div>
         <mat-radio-group ngDefaultControl formControlName="gender">
-          <mat-radio-button type="radio" id="male" name="gender" color="primary" value="male" required>
+          <mat-radio-button type="radio" id="male" name="gender" color="primary" value="male">
             <label class="text" for="male">Male</label>
           </mat-radio-button>
-          <mat-radio-button type="radio" id="female" name="gender" color="primary" value="female" required>
+          <mat-radio-button type="radio" id="female" name="gender" color="primary" value="female">
             <label class="text" for="female">Female</label>
           </mat-radio-button>
         </mat-radio-group>
@@ -96,7 +99,8 @@
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Notes</mat-label>
         <textarea matInput id="notes" class="input" name="Notes" formControlName="notes" placeholder=""
-          style="height:100px" required></textarea>
+          style="height:100px"></textarea>
+          <mat-error *ngIf="checkError('notes', 'required')">Note is required</mat-error>
       </mat-form-field>
     </div>
 

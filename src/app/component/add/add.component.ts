@@ -7,7 +7,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { HttpService } from '../../service/http.service';
 import { DataService } from 'src/app/service/data.service';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -55,24 +55,36 @@ export class AddComponent implements OnInit {
 
   /**
    * Creates the object of employee form on submit 
-   * @param fb FormBulider object
+   * @param formBuilder FormBulider object
    */
   constructor(
     private formBuilder: FormBuilder,
     private httpService: HttpService,
     private dataService: DataService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) {
     this.employeeFormGroup = this.formBuilder.group({
-      name: new FormControl(''),
-      profilePic: new FormControl(''),
-      gender: new FormControl(''),
+      name: new FormControl('', [Validators.required, Validators.pattern("^[A-Z][a-zA-z\\s]{2,}$")]),
+      profilePic: new FormControl('', Validators.required),
+      gender: new FormControl('', Validators.required),
       department: this.formBuilder.array([], [Validators.required]),
-      salary: new FormControl(''),
-      startDate: new FormControl(''),
-      notes: new FormControl('')
+      salary: new FormControl('', Validators.required),
+      startDate: new FormControl('', Validators.required),
+      notes: new FormControl('', Validators.required)
     })
   }
+
+  /**
+   * To show error message for invalid or missing data
+   * @param controlName 
+   * @param errorName  
+   * @returns error message 
+   */
+  public checkError = (controlName: string, errorName: string) => {
+    return this.employeeFormGroup.controls[controlName].hasError(errorName);
+  }
+
 
   /**
    * On change event for checkbox. In this we can select multiple checkobox 
@@ -109,14 +121,25 @@ export class AddComponent implements OnInit {
   /**
    * Submit form
    */
-  onSubmit() {
+  onSubmit(): void {
     this.employee = this.employeeFormGroup.value;
-    this.httpService.addEmployeeData(this.employee).subscribe(response => {
-      console.log(response);
-    });
+    if (this.activatedRoute.snapshot.params['id'] != undefined) {
+      this.httpService.updateEmployeeData(this.activatedRoute.snapshot.params['id'], this.employee).subscribe(response => {
+        console.log(response);
+        this.router.navigateByUrl('/home');
+      });
+    }
+    else {
+      this.httpService.addEmployeeData(this.employee).subscribe(response => {
+        console.log(response);
+        this.router.navigateByUrl('/home');
+      });
+    }
   }
 
-
+/**
+ * To set previously submmitted form values while updating form data
+ */
   ngOnInit(): void {
     if (this.activatedRoute.snapshot.params['id'] != undefined) {
       this.dataService.currentEmployee.subscribe(employee => {
