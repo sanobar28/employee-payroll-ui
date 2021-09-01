@@ -37,7 +37,7 @@
          <td>{{employee.startDate}}</td>
 
          <td>
-           <img id={{employee.id}} (click)="remove(employee.id)" src="../assets/icons/delete-black-18dp.svg"
+           <img id={{employee.id}} (click)="remove(employee.id)" (click)="openSnackBar('Deleted Successfully', 'CLOSE')" src="../assets/icons/delete-black-18dp.svg"
             alt="delete">
            <img id={{employee.id}} (click)="update(employee)" src="../assets/icons/create-black-18dp.svg" 
             alt="edit">

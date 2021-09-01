@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Employee } from 'src/app/model/employee';
 import { DataService } from 'src/app/service/data.service';
@@ -20,9 +21,13 @@ export class HomeComponent implements OnInit {
   constructor(
     private httpService: HttpService, 
     private dataService: DataService, 
-    private router: Router) 
+    private router: Router,
+    private snackBar: MatSnackBar) 
     { }
 
+  /**
+   * To get employee data and count on home page
+   */
   ngOnInit(): void {
     this.httpService.getEmployeeData().subscribe(responce => {
       this.employeeList = responce.data;
@@ -33,6 +38,10 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  /**
+   * To remove employee data by its id
+   * @param id  employee id
+   */
   remove(id: number) {
     this.httpService.deleteEmployeeData(id).subscribe(data => {
       console.log(data);
@@ -40,9 +49,25 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  /**
+   * To update employee data it appends employee id in url 
+   * @param employee 
+   */
   update(employee: Employee): void {
     this.dataService.changeEmployee(employee);
     this.router.navigateByUrl('/form/' + employee.id)
+  }
+
+  
+  /**
+   * 
+   * @param message opens snackbar message on submit form
+   * @param action 
+   */
+   openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
+    });
   }
 
 

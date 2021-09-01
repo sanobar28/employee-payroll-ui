@@ -8,6 +8,7 @@ import { HttpService } from '../../service/http.service';
 import { DataService } from 'src/app/service/data.service';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class AddComponent implements OnInit {
   public employee: Employee = new Employee;
   public employeeFormGroup: FormGroup;
   subscription: Subscription;
+  message: string;
 
 
   /**
@@ -62,7 +64,8 @@ export class AddComponent implements OnInit {
     private httpService: HttpService,
     private dataService: DataService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {
     this.employeeFormGroup = this.formBuilder.group({
       name: new FormControl('', [Validators.required, Validators.pattern("^[A-Z][a-zA-z\\s]{2,}$")]),
@@ -118,28 +121,65 @@ export class AddComponent implements OnInit {
     return value;
   }
 
+
   /**
-   * Submit form
+   * 
+   * @param message opens snackbar message on submit form
+   * @param action 
+   */
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
+    });
+  }
+
+
+  /**
+   * Submit form method in which it is checking user input validations errors.
+   * If there are errors it will pop up mat snackbar with error message.
+   * It will check while submitting form that it is request for update form or else it will submit 
+   * new data. 
    */
   onSubmit(): void {
-    this.employee = this.employeeFormGroup.value;
-    if (this.activatedRoute.snapshot.params['id'] != undefined) {
-      this.httpService.updateEmployeeData(this.activatedRoute.snapshot.params['id'], this.employee).subscribe(response => {
-        console.log(response);
-        this.router.navigateByUrl('/home');
-      });
+    var dateString = this.employeeFormGroup.get('startDate').value;
+    var myDate = new Date(dateString);
+    var today = new Date();
+    if (myDate > today) {
+      this.message = "StartDate should not be future date.";
+      this.openSnackBar(this.message, "CLOSE");
+    }
+    if (this.employeeFormGroup.invalid) {
+      if (this.employeeFormGroup.get('department').value.length == 0) {
+        this.message = "Department is empty";
+        this.openSnackBar(this.message, "CLOSE");
+      }
+      else {
+        this.message = "1. Profile Pic required" + "\n" +
+          "2. Gender required" + "\n" +
+          "3. Min Wage should be more than 10000";
+        this.openSnackBar(this.message, "CLOSE");
+      }
     }
     else {
-      this.httpService.addEmployeeData(this.employee).subscribe(response => {
-        console.log(response);
-        this.router.navigateByUrl('/home');
-      });
+      this.employee = this.employeeFormGroup.value;
+      if (this.activatedRoute.snapshot.params['id'] != undefined) {
+        this.httpService.updateEmployeeData(this.activatedRoute.snapshot.params['id'], this.employee).subscribe(response => {
+          console.log(response);
+          this.router.navigateByUrl('/home');
+        });
+      }
+      else {
+        this.httpService.addEmployeeData(this.employee).subscribe(response => {
+          console.log(response);
+          this.router.navigateByUrl('/home');
+        });
+      }
     }
   }
 
-/**
- * To set previously submmitted form values while updating form data
- */
+  /**
+   * To set previously submmitted form values while updating form data
+   */
   ngOnInit(): void {
     if (this.activatedRoute.snapshot.params['id'] != undefined) {
       this.dataService.currentEmployee.subscribe(employee => {
