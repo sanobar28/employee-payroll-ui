@@ -60,7 +60,7 @@ sans-serif;
       width: 100%;
       margin: 0 auto;
       border-collapse: separate;
-      border-spacing: 0 0px;
+      border-spacing: 0 15px;
       min-width: 800px;
 
       td,
@@ -96,6 +96,7 @@ sans-serif;
 
       td:first-child {
         display: flex;
+        flex-direction: row;
         align-items: center;
       }
 
